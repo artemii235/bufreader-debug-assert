@@ -63,20 +63,18 @@ pub async fn server_loop() {
 
 pub async fn client_loop() {
     let str = b"Hello\n ";
-    let mut stream = TcpStream::connect(SocketAddr::from_str("127.0.0.1:9000").unwrap()).await.unwrap();
-    stream.write_all(str).await.unwrap();
-    // uncomment the following to avoid panic
-    /*
-    let mut stream = BufReader::new(stream);
-    let mut buffer = String::with_capacity(1024);
-    stream.read_line(&mut buffer).await.unwrap();
-    println!("{}", buffer);
-    */
-    let mut stream1 = TcpStream::connect(SocketAddr::from_str("127.0.0.1:9000").unwrap()).await.unwrap();
-    stream1.write_all(str).await.unwrap();
-    drop(stream);
-    drop(stream1);
-    sleep(Duration::from_millis(3000)).await;
+    for _ in 0..2 {
+        let mut stream = TcpStream::connect(SocketAddr::from_str("127.0.0.1:9000").unwrap()).await.unwrap();
+        stream.write_all(str).await.unwrap();
+        // uncomment the following to avoid panic
+        /*
+        let mut stream = BufReader::new(stream);
+        let mut buffer = String::with_capacity(1024);
+        stream.read_line(&mut buffer).await.unwrap();
+        println!("{}", buffer);
+        */
+        sleep(Duration::from_millis(500)).await;
+    }
 }
 
 fn main() {
